@@ -11,6 +11,8 @@ const cut = x => x.split(' ').slice(1, 4).join('-')
 
 const organize = x => (x.trim() !== 'Invalid Date') ? cut(x) : 'invalid-tags'
 
+const nonJpeg = x => x.search(/\.(jpeg|jpg)$/) !== -1
+
 const move = (x, y) => (err, data) =>
   fs.rename(`./images/${y}`, `./newImages/${x}/${y}`)
 
@@ -27,7 +29,7 @@ const transform = x => (err, data) => (
 )
 
 const collect = (err, dir) => dir
-    .filter(x => x !== '.DS_Store')
+    .filter(nonJpeg)
     .map(x => fs.readFile(`./images/${x}`, transform(x)))
 
 fs.readdir('./images', collect)
@@ -40,6 +42,7 @@ module.exports = {
   toString,
   transfer,
   transform,
+  nonJpeg,
   parse,
   unixDate
 }

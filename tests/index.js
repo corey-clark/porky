@@ -5,10 +5,11 @@ const fs = require('fs')
 const validator = require('validator')
 
 const cut = utils.cut
+const collect = utils.collect
+const nonJpeg = utils.nonJpeg
 const parse = utils.parse
 const toString = utils.toString
 const unixDate = utils.unixDate
-const collect = utils.collect
 
 var globalData
 
@@ -39,6 +40,16 @@ describe('cut', () => {
 
   it ('should return a valid date', () => { 
     expect(validator.isDate(timestamp[0])).to.be.equal(true)
+  })
+})
+
+describe('nonJpeg', () => { 
+  it ('should filter out non jpeg images', () => { 
+    const images = ['one.jpg', 'two.png', 'three.mp4']
+      .filter(nonJpeg)
+
+    expect(images.length).to.equal(1) 
+    expect(images[0]).to.equal('one.jpg')
   })
 })
 
