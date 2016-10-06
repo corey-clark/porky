@@ -11,6 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "exif-parser": "0.1.9",
+    "moment": "2.15.1",
+    "readdirp": "2.1.0",
     "validator": "5.7.0"
   },
   "devDependencies": {
