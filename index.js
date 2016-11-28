@@ -19,7 +19,7 @@ const organize = x => (x.trim() !== 'Invalid Date') ? cut(x) : 'invalid-tags'
 
 const move = (x, img) => (err, data) => { 
   const newPath = img.fullParentDir.replace(/images/, 'newImages')
-  return console.log(img.fullPath)
+
   return fs.rename(img.fullPath, `${newPath}/${x}/${img.name}`)
 }
 
@@ -32,11 +32,11 @@ const transform = img => (err, data) => {
     .map(parse)
     .map(unixDate)
 
-  if (parsed[0] !== 'Invalid Date') { 
-    const modified = moment(parsed[0]).format('YYYYMMDDhhmm')
-    exec(`touch -mt ${modified} ${img.fullPath}`)
-  }
-  
+  //if (parsed[0].toString() !== 'Invalid Date') { 
+    //const modified = moment(parsed[0]).format('YYYYMMDDhhmm')
+    //exec(`touch -mt ${modified} ${img.fullPath}`)
+  //}
+
   parsed
     .map(toString)
     .map(organize)
