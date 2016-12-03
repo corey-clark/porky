@@ -18,9 +18,13 @@ const cut = x => {
 const organize = x => (x.trim() !== 'Invalid Date') ? cut(x) : 'invalid-tags'
 
 const move = (x, img) => (err, data) => { 
-  const newPath = img.fullParentDir.replace(/images/, 'newImages')
+  const path = img.fullParentDir
 
-  return fs.rename(img.fullPath, `${newPath}/${x}/${img.name}`)
+  const newPath = path
+    .substr(0, path.indexOf(/images/) + 8)
+    .replace(/images/, 'newImages')
+  
+  return fs.rename(img.fullPath, `${newPath}${x}/${img.name}`)
 }
 
 const transfer = img => x => { 
@@ -32,15 +36,14 @@ const transform = img => (err, data) => {
     .map(parse)
     .map(unixDate)
 
-  //if (parsed[0].toString() !== 'Invalid Date') { 
-    //const modified = moment(parsed[0]).format('YYYYMMDDhhmm')
-    //exec(`touch -mt ${modified} ${img.fullPath}`)
-  //}
+    const modified = moment(parsed[0]).format('YYYYMMDDhhmm')
 
-  parsed
-    .map(toString)
-    .map(organize)
-    .map(transfer(img))
+    exec(`touch -mt ${modified} ${img.fullPath}`, () => { 
+      parsed
+        .map(toString)
+        .map(organize)
+        .map(transfer(img))
+    })
 }
 
 const collect = (err, dir) => { 
